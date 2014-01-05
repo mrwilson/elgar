@@ -9,10 +9,14 @@ type Host struct {
   ip        *net.IPAddr
 }
 
-func NewHost(name, address string) (*Host) {
+func NewHost(name, address string) (*Host, error) {
 
-  ip, _ := net.ResolveIPAddr("ip", address)
+  ip, err := net.ResolveIPAddr("ip", address)
 
-  return &Host{ name: name, ip: ip }
+  if err != nil {
+    return nil, err
+  }
+
+  return &Host{ name: name, ip: ip }, nil
 
 }
