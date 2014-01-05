@@ -37,29 +37,21 @@ func TestNewHost_invalidIP(t *testing.T) {
 
 func TestParseHost_fromYaml(t *testing.T) {
 
-  file, err := os.Open("./resources/example_host.yml")
-
-  if err != nil {
-    t.Error("Could not open file")
-  }
-
-  out, err := ParseFile(file)
-
-  if err != nil {
-    t.Errorf("Error parsing file: %+v", err)
-  }
-
+  file, _   := os.Open("./resources/example_host.yml")
+  out,  _   := ParseFile(file)
   host, err := out.Host("example_host")
 
-  if err != nil {
-    t.Error("Cannot parse host from file")
+  if err != nil { t.Error("Cannot parse host from file") }
+  if host.name != "example_host" { t.Error("Hostname not 'example_host': %s", host.name) }
+  if host.ip.String() != "1.2.3.4" { t.Error("Address does not match '1.2.3.4': %s", host.ip.String()) }
+}
+
+func TestParseHost_fromYaml_NoIP(t *testing.T) {
+  file, _  := os.Open("./resources/example_host_no_address.yml")
+  _,   err := ParseFile(file)
+
+  if _, ok := err.(*InvalidDeclaration); !ok {
+    t.Errorf("Should throw InvalidDeclaration error")
   }
 
-  if host.name != "example_host" {
-    t.Error("Hostname not 'example_host': %s", host.name)
-  }
-
-  if host.ip.String() != "1.2.3.4" {
-    t.Error("Address does not match '1.2.3.4': %s", host.ip.String())
-  }
 }
