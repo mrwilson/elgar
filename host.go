@@ -2,21 +2,22 @@ package elgar
 
 import (
   "net"
+  "fmt"
 )
 
 type Host struct {
   name      string
-  ip        *net.IPAddr
+  ip        *net.IP
 }
 
 func NewHost(name, address string) (*Host, error) {
 
-  ip, err := net.ResolveIPAddr("ip", address)
+  ip := net.ParseIP(address)
 
-  if err != nil {
-    return nil, err
+  if ip == nil {
+    return nil, fmt.Errorf("Badly formed address: %s",ip)
   }
 
-  return &Host{ name: name, ip: ip }, nil
+  return &Host{ name: name, ip: &ip }, nil
 
 }
