@@ -1,0 +1,4 @@
+example_service:
+  type: service
+  rules:
+    - accept: tcp, 9000
