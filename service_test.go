@@ -40,3 +40,14 @@ func TestParseService_fromYaml(t *testing.T) {
     t.Errorf("Rule parsed port incorrectly: %d", rule.port)
   }
 }
+
+func TestParseService_fromYaml_noPorts(t *testing.T) {
+
+  file, _ := os.Open("./resources/example_service_no_port.yml")
+  _, err  := ParseFile(file)
+
+  if err == nil {
+    t.Error("Cannot parse service from file")
+  }
+
+}

@@ -72,12 +72,14 @@ func parseServices(foo yaml.Map) (map[string]*Service, error) {
 
           protocol_and_ports := strings.Split(prs.String(), ",")
 
-          port, _ := strconv.ParseInt(strings.TrimSpace(protocol_and_ports[1]),0,0)
+          port, err := strconv.ParseInt(strings.TrimSpace(protocol_and_ports[1]),0,0)
+
+          if err != nil {
+            return nil, &InvalidDeclaration{ Name: name, Declaration: val }
+          }
 
           rules = append(rules, &Rule{ behaviour: command, protocol: protocol_and_ports[0], port: int(port) })
-
         }
-
       }
 
       services[name] = &Service{ name: name, rules: rules }
