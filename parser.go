@@ -116,21 +116,17 @@ func ParseFile(r io.Reader) (*ElgarState, error) {
 }
 
 func (es *ElgarState) Service(name string) (*Service, error) {
-
   if val, ok := es.services[name]; ok {
     return val, nil
   } else {
     return nil, fmt.Errorf("Could not find host: %s", name)
   }
-
 }
 
 func (es *ElgarState) Host(name string) (*Host, error) {
-
   if val, ok := es.hosts[name]; ok {
     return val, nil
   } else {
     return nil, fmt.Errorf("Could not find host: %s", name)
   }
-
 }
